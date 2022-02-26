@@ -12,4 +12,6 @@ public interface HouseService {
   ResponseEntity<CommonHttpResponse<String>> addHouse(HouseAddRequestBody body, MultipartFile houseType, MultipartFile housePicture);
 
   void getHouseType(String houseId, HttpServletResponse response);
+
+  void getHousePicture(String houseId, HttpServletResponse response);
 }

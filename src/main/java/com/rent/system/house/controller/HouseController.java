@@ -37,4 +37,9 @@ public class HouseController {
   public void getHouseType(@PathVariable String houseId, HttpServletResponse response) {
     houseService.getHouseType(houseId, response);
   }
+
+  @GetMapping("/{houseId}/housePicture")
+  public void getHousePicture(@PathVariable String houseId, HttpServletResponse response) {
+    houseService.getHousePicture(houseId, response);
+  }
 }

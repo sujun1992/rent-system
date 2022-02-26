@@ -82,26 +82,39 @@ public class HouseServiceImpl implements HouseService {
     Optional<HouseEntity> optional = houseDao.findById(houseId);
     if (optional.isPresent()) {
       String houseType = optional.get().getHouseType();
-      response.setContentType("image/*");
-      try {
-        response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
-            "attachment;filename=" + URLEncoder.encode(
-                houseType.substring(houseType.lastIndexOf(File.separator)),
-                StandardCharsets.UTF_8.name()));
-      } catch (UnsupportedEncodingException e) {
-        log.error("设置文件名失败！", e);
+      createImage(response, houseType);
+    }
+  }
+
+  private void createImage(HttpServletResponse response, String houseType) {
+    response.setContentType("image/*");
+    try {
+      response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
+          "attachment;filename=" + URLEncoder.encode(
+              houseType.substring(houseType.lastIndexOf(File.separator)),
+              StandardCharsets.UTF_8.name()));
+    } catch (UnsupportedEncodingException e) {
+      log.error("设置文件名失败！", e);
+    }
+    try (InputStream inputStream = new FileInputStream(
+            houseType); OutputStream outputStream = response.getOutputStream()) {
+      byte[] buff = new byte[1024];
+      int len;
+      while ((len = inputStream.read(buff, 0, 1024)) != -1) {
+        outputStream.write(buff, 0, len);
       }
-      try (InputStream inputStream = new FileInputStream(
-          houseType); OutputStream outputStream = response.getOutputStream()) {
-        byte[] buff = new byte[1024];
-        int len = 0;
-        while ((len = inputStream.read(buff, 0, 1024)) != -1) {
-          outputStream.write(buff, 0, len);
-        }
-        outputStream.flush();
-      } catch (Exception e) {
-        log.error("生成房型图片失败！", e);
-      }
+      outputStream.flush();
+    } catch (Exception e) {
+      log.error("生成房型图片失败！", e);
+    }
+  }
+
+  @Override
+  public void getHousePicture(String houseId, HttpServletResponse response) {
+    Optional<HouseEntity> optional = houseDao.findById(houseId);
+    if (optional.isPresent()) {
+      String housePicture = optional.get().getHousePicture();
+      createImage(response, housePicture);
     }
   }
 }
