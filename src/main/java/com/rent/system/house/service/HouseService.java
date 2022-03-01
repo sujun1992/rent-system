@@ -14,4 +14,6 @@ public interface HouseService {
   void getHouseType(String houseId, HttpServletResponse response);
 
   void getHousePicture(String houseId, HttpServletResponse response);
+
+  ResponseEntity<CommonHttpResponse<String>> delHouse(String houseId);
 }

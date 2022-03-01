@@ -6,6 +6,7 @@ import com.rent.system.house.service.HouseService;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,13 +34,30 @@ public class HouseController {
     return houseService.addHouse(body, houseType, housePicture);
   }
 
+  /**
+   * 获取房型图片
+   *
+   * @param houseId
+   * @param response
+   */
   @GetMapping("/{houseId}/houseType")
   public void getHouseType(@PathVariable String houseId, HttpServletResponse response) {
     houseService.getHouseType(houseId, response);
   }
 
+  /**
+   * 房屋的照片
+   *
+   * @param houseId
+   * @param response
+   */
   @GetMapping("/{houseId}/housePicture")
   public void getHousePicture(@PathVariable String houseId, HttpServletResponse response) {
     houseService.getHousePicture(houseId, response);
+  }
+
+  @DeleteMapping("/{houseId}")
+  public ResponseEntity<CommonHttpResponse<String>> delHouse(@PathVariable String houseId) {
+    return houseService.delHouse(houseId);
   }
 }

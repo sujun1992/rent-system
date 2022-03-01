@@ -59,4 +59,16 @@ public class HouseEntity {
    */
   @Column(name = "house_desc")
   private String houseDesc;
+
+  /**
+   * 房屋出租状态:0：待租；1：出租中
+   */
+  @Column(name = "house_rent_status")
+  private int houseRentStatus;
+
+  /**
+   * 房屋审核状态:0：未审核；1：审核通过
+   */
+  @Column(name = "house_audit_status")
+  private int houseAuditStatus;
 }

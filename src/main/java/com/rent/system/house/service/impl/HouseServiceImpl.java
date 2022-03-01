@@ -97,7 +97,7 @@ public class HouseServiceImpl implements HouseService {
       log.error("设置文件名失败！", e);
     }
     try (InputStream inputStream = new FileInputStream(
-            houseType); OutputStream outputStream = response.getOutputStream()) {
+        houseType); OutputStream outputStream = response.getOutputStream()) {
       byte[] buff = new byte[1024];
       int len;
       while ((len = inputStream.read(buff, 0, 1024)) != -1) {
@@ -116,5 +116,11 @@ public class HouseServiceImpl implements HouseService {
       String housePicture = optional.get().getHousePicture();
       createImage(response, housePicture);
     }
+  }
+
+  @Override
+  public ResponseEntity<CommonHttpResponse<String>> delHouse(String houseId) {
+    houseDao.deleteById(houseId);
+    return CommonHttpResponse.ok("success");
   }
 }
