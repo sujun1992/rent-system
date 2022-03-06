@@ -3,6 +3,7 @@ package com.rent.system.login.controller;
 import com.rent.system.common.CommonHttpResponse;
 import com.rent.system.login.model.LoginRequestBody;
 import com.rent.system.login.model.RegisterUserRequestBody;
+import com.rent.system.login.model.UserLoginInfo;
 import com.rent.system.login.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,10 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * @author jun.su <jun.su@mobvoi.com>
- * @since 2022/2/28 21:51
- */
+import javax.servlet.http.HttpSession;
+
+
 @RestController
 public class LoginController {
 
@@ -31,8 +31,8 @@ public class LoginController {
   }
 
   @PostMapping("/login")
-  public ResponseEntity<CommonHttpResponse<String>> login(
-      @RequestBody LoginRequestBody body) {
-    return loginService.login(body);
+  public ResponseEntity<CommonHttpResponse<UserLoginInfo>> login(
+          @RequestBody LoginRequestBody body, HttpSession session) {
+    return loginService.login(body,session);
   }
 }
