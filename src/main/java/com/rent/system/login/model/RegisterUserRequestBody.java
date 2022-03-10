@@ -10,5 +10,8 @@ public class RegisterUserRequestBody {
 
   private String password;
 
-  private String nickname;
+  /**
+   * 类别：0：房客；1：房东；
+   */
+  private int type;
 }
