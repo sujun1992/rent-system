@@ -50,6 +50,7 @@ public class LoginServiceImpl implements LoginService {
             if (matches) {
                 session.setAttribute("userId", entity.getUserId());
                 session.setAttribute("account", entity.getAccount());
+                session.setAttribute("type", entity.getType());
                 UserLoginInfo info = new UserLoginInfo(entity);
                 return CommonHttpResponse.ok(info);
             } else {
