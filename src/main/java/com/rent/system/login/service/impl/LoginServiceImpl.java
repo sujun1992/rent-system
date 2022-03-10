@@ -35,7 +35,7 @@ public class LoginServiceImpl implements LoginService {
     public ResponseEntity<CommonHttpResponse<String>> register(RegisterUserRequestBody body) {
         UserEntity entity = new UserEntity();
         entity.setAccount(body.getAccount());
-        entity.setNickname(body.getNickname());
+        entity.setType(body.getType());
         entity.setPassword(passwordEncoder.encode(body.getPassword()));
         userDao.saveAndFlush(entity);
         return CommonHttpResponse.ok("success");
