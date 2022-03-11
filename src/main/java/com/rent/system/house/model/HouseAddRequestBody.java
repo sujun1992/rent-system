@@ -10,4 +10,7 @@ public class HouseAddRequestBody {
   private long rentalTime;
   private int shareNum;
   private String desc;
+  private String address;
+  private String houseType;
+  private String housePicture;
 }

@@ -3,6 +3,10 @@ package com.rent.system.house.service;
 
 import com.rent.system.common.CommonHttpResponse;
 import com.rent.system.house.model.HouseAddRequestBody;
+import com.rent.system.house.model.HouseAgreeRequest;
+import com.rent.system.house.model.HouseRequest;
+import com.rent.system.house.model.HouseTenantInfo;
+import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -13,7 +17,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface HouseService {
 
-  ResponseEntity<CommonHttpResponse<String>> addHouse(HouseAddRequestBody body, MultipartFile houseType, MultipartFile housePicture);
+  ResponseEntity<CommonHttpResponse<String>> addHouse(HouseAddRequestBody body,
+      HttpSession session);
 
   void getHouseType(String houseId, HttpServletResponse response);
 
@@ -24,4 +29,18 @@ public interface HouseService {
   ResponseEntity<CommonHttpResponse<HouseListResponse>> getHouseList(int page, int size, String area, boolean share, int rentMinNum, int rentMaxNum, HttpSession session);
 
   ResponseEntity<CommonHttpResponse<HouseBaseInfo>> getHouse(String houseId);
+
+  ResponseEntity<CommonHttpResponse<HouseBaseInfo>> currentRentHouse(HttpSession session);
+
+  ResponseEntity<CommonHttpResponse<String>> leaseRenewal(HttpSession session);
+
+  ResponseEntity<CommonHttpResponse<String>> updateHouse(String houseId, HouseAddRequestBody body);
+
+  ResponseEntity<CommonHttpResponse<List<HouseTenantInfo>>> rent(HttpSession session);
+
+  ResponseEntity<CommonHttpResponse<String>> picture(MultipartFile picture);
+
+  ResponseEntity<CommonHttpResponse<String>> agree(HouseAgreeRequest request);
+
+  ResponseEntity<CommonHttpResponse<String>> houseRequest(HouseRequest request, HttpSession session);
 }
