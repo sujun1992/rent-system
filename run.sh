@@ -1,0 +1,1 @@
+nohup java -Xms512m -Xmx512m -jar rent-system-0.0.1-SNAPSHOT.jar  --spring.datasource.url="jdbc:mysql://127.0.0.1:3306/rent?zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=UTF-8&useSSL=true&autoReconnect=true" --spring.datasource.username="rent" --spring.datasource.password="rent" &
