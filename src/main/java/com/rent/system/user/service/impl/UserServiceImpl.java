@@ -3,17 +3,25 @@ package com.rent.system.user.service.impl;
 import com.rent.system.common.CommonHttpResponse;
 import com.rent.system.user.dao.UserDao;
 import com.rent.system.user.dao.entity.UserEntity;
+import com.rent.system.user.dao.entity.UserEntity_;
 import com.rent.system.user.model.UserDetailInfo;
+import com.rent.system.user.model.UserListResponse;
 import com.rent.system.user.model.UserUpdateRequestBody;
 import com.rent.system.user.service.UserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpSession;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -35,7 +43,9 @@ public class UserServiceImpl implements UserService {
         Optional<UserEntity> optional = userDao.findById(body.getUserId());
         if (optional.isPresent()) {
             UserEntity userEntity = optional.get();
-            userEntity.setPassword(passwordEncoder.encode(body.getPassword()));
+            if(!userEntity.getPassword().equalsIgnoreCase(body.getPassword())) {
+                userEntity.setPassword(passwordEncoder.encode(body.getPassword()));
+            }
             userEntity.setNickname(body.getNickname());
             userEntity.setIdCard(body.getIdCard());
             userEntity.setName(body.getName());
@@ -58,5 +68,29 @@ public class UserServiceImpl implements UserService {
             BeanUtils.copyProperties(userEntity, detailInfo);
         }
         return CommonHttpResponse.ok(detailInfo);
+    }
+
+    @Override
+    public ResponseEntity<CommonHttpResponse<UserListResponse>> getUserList(int page, int size, HttpSession session) {
+        int type = Integer.parseInt(String.valueOf(session.getAttribute("type")));
+        if (type != 2) {
+            return CommonHttpResponse.exception(60003, "没有权限！");
+        }
+        Pageable pageable = PageRequest
+                .of(page - 1, size, Sort.Direction.DESC, UserEntity_.ACCOUNT);
+        Page<UserEntity> entities = userDao.findAll((root, query, criteriaBuilder) -> {
+            CriteriaBuilder.In<Integer> in = criteriaBuilder.in(root.get(UserEntity_.TYPE));
+            in.value(0);
+            in.value(1);
+            return criteriaBuilder.and(in);
+        }, pageable);
+        UserListResponse response = new UserListResponse();
+        response.setTotal(entities.getTotalElements());
+        response.setList(entities.getContent().stream().map(entity -> {
+            UserDetailInfo detailInfo = new UserDetailInfo();
+            BeanUtils.copyProperties(entity, detailInfo);
+            return detailInfo;
+        }).collect(Collectors.toList()));
+        return CommonHttpResponse.ok(response);
     }
 }

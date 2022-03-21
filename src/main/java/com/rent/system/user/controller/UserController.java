@@ -2,6 +2,7 @@ package com.rent.system.user.controller;
 
 import com.rent.system.common.CommonHttpResponse;
 import com.rent.system.user.model.UserDetailInfo;
+import com.rent.system.user.model.UserListResponse;
 import com.rent.system.user.model.UserUpdateRequestBody;
 import com.rent.system.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,5 +34,13 @@ public class UserController {
     @GetMapping
     public ResponseEntity<CommonHttpResponse<UserDetailInfo>> getUserDetail(HttpSession session) {
         return userService.getUserDetail(session);
+    }
+
+    @GetMapping("/list")
+    public ResponseEntity<CommonHttpResponse<UserListResponse>> getUserList(
+            @RequestParam(defaultValue = "1", required = false) int page,
+            @RequestParam(defaultValue = "10", required = false) int size,
+            HttpSession session) {
+        return userService.getUserList(page, size, session);
     }
 }

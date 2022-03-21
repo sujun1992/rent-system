@@ -11,26 +11,33 @@ public class HouseBaseInfo {
     area = entity.getArea();
     shareNum = entity.getShareNum();
     rentNum = entity.getRentNum();
-    rentalTime = TimeUtil.formatterTime(entity.getRentalTime());
+    rentalTime = entity.getRentalTime();
     houseDesc = entity.getHouseDesc();
     houseId = entity.getHouseId();
     address = entity.getAddress();
     houseAuditStatus = entity.getHouseAuditStatus();
     houseRentStatus = entity.getHouseRentStatus();
     houseTenant = entity.getHouseTenant();
+    houseOwner = entity.getHouseOwner();
+    roomType = entity.getRoomType();
+    houseRentAction = entity.getHouseRentAction();
   }
 
   private String area;
   private int shareNum;
   private int rentNum;
-  private String rentalTime;
+  private long rentalTime;
   private String housePicture;
   private String houseType;
   private String houseDesc;
+  private String houseOwner;
   private String houseId;
   private String address;
   private String houseTenant;
+  private String roomType;
   private int houseRentStatus;
+  private int houseRentAction;
   private int houseAuditStatus;
   private LodgerInfo lodger;
+  private OwnerInfo owner;
 }

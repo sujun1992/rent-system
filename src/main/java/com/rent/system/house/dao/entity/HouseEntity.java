@@ -59,10 +59,16 @@ public class HouseEntity {
     private String houseDesc;
 
     /**
-     * 房屋出租状态:0：待租；1：出租中；2：房屋待续租；3：房客发起房屋续租；4：房客发起租房申请；5：房东同意续租申请
+     * 房屋出租状态:0：待租；1：出租中；2：房屋待续租；3：房客发起房屋续租；4：房客发起租房申请；5：房东同意续租申请；6:退租
      */
     @Column(name = "house_rent_status")
     private int houseRentStatus;
+
+    /**
+     * 房屋出租状态:0：房客发起房屋续租；1：房客发起租房申请；2：退租；3：待租；4：出租中
+     */
+    @Column(name = "house_rent_action")
+    private int houseRentAction;
 
     /**
      * 房屋审核状态:0：未审核；1：审核通过；2：审核不通过
@@ -87,4 +93,7 @@ public class HouseEntity {
 
     @Column(name = "rent_duration")
     private int rentDuration;
+
+    @Column(name = "room_type")
+    private String roomType;
 }

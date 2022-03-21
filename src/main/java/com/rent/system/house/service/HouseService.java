@@ -7,6 +7,7 @@ import com.rent.system.house.model.HouseAgreeRequest;
 import com.rent.system.house.model.HouseRequest;
 import com.rent.system.house.model.HouseTenantInfo;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -26,13 +27,13 @@ public interface HouseService {
 
   ResponseEntity<CommonHttpResponse<String>> delHouse(String houseId);
 
-  ResponseEntity<CommonHttpResponse<HouseListResponse>> getHouseList(int page, int size, String area, boolean share, int rentMinNum, int rentMaxNum, HttpSession session);
+  ResponseEntity<CommonHttpResponse<HouseListResponse>> getHouseList(int page, int size, String area, Boolean share, int rentMinNum, int rentMaxNum, HttpSession session);
 
   ResponseEntity<CommonHttpResponse<HouseBaseInfo>> getHouse(String houseId);
 
-  ResponseEntity<CommonHttpResponse<HouseBaseInfo>> currentRentHouse(HttpSession session);
+  ResponseEntity<CommonHttpResponse<List<HouseBaseInfo>>> currentRentHouse(HttpSession session);
 
-  ResponseEntity<CommonHttpResponse<String>> leaseRenewal(HttpSession session);
+  ResponseEntity<CommonHttpResponse<String>> leaseRenewal(String houseId, int type, int rentNum, HttpSession session);
 
   ResponseEntity<CommonHttpResponse<String>> updateHouse(String houseId, HouseAddRequestBody body);
 
@@ -43,4 +44,14 @@ public interface HouseService {
   ResponseEntity<CommonHttpResponse<String>> agree(HouseAgreeRequest request);
 
   ResponseEntity<CommonHttpResponse<String>> houseRequest(HouseRequest request, HttpSession session);
+
+  ResponseEntity<CommonHttpResponse<Map<Integer, List<HouseBaseInfo>>>> tenantAuditInfo(HttpSession session);
+
+    ResponseEntity<CommonHttpResponse<String>> adminAgree(HouseAgreeRequest request);
+
+  ResponseEntity<CommonHttpResponse<Map<Integer, List<HouseBaseInfo>>>> adminAuditInfo(HttpSession session);
+
+  ResponseEntity<CommonHttpResponse<List<HouseBaseInfo>>> getRentHouse(HttpSession session);
+
+  ResponseEntity<CommonHttpResponse<List<HouseBaseInfo>>> getOwnerRentHouse(HttpSession session);
 }

@@ -9,8 +9,9 @@ public class HouseAddRequestBody {
   private int rentNum;
   private long rentalTime;
   private int shareNum;
-  private String desc;
+  private String houseDesc;
   private String address;
   private String houseType;
+  private String roomType;
   private String housePicture;
 }
