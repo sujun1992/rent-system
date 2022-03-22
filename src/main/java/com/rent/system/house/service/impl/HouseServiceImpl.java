@@ -4,11 +4,17 @@ import com.rent.system.common.CommonHttpResponse;
 import com.rent.system.house.dao.HouseDao;
 import com.rent.system.house.dao.entity.HouseEntity;
 import com.rent.system.house.dao.entity.HouseEntity_;
-import com.rent.system.house.model.*;
+import com.rent.system.house.model.HouseAddRequestBody;
+import com.rent.system.house.model.HouseAgreeRequest;
+import com.rent.system.house.model.HouseBaseInfo;
+import com.rent.system.house.model.HouseListResponse;
+import com.rent.system.house.model.HouseRequest;
+import com.rent.system.house.model.HouseTenantInfo;
+import com.rent.system.house.model.LodgerInfo;
+import com.rent.system.house.model.OwnerInfo;
 import com.rent.system.house.service.HouseService;
 import com.rent.system.user.dao.UserDao;
 import com.rent.system.user.dao.entity.UserEntity;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -17,12 +23,16 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.persistence.criteria.Predicate;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -337,12 +347,24 @@ public class HouseServiceImpl implements HouseService {
         request.getUserId(), request.getHouseId());
     if (optional.isPresent()) {
       HouseEntity entity = optional.get();
-      if (request.isPass()) {
-        entity.setHouseRentStatus(5);
-        entity.setHouseRentAction(1);
+      if (request.getType() == 0) {
+        if (request.isPass()) {
+          entity.setHouseRentStatus(5);
+        } else {
+          entity.setHouseRentStatus(1);
+        }
+      } else if (request.getType() == 1) {
+        if (request.isPass()) {
+          entity.setHouseRentStatus(5);
+        } else {
+          entity.setHouseRentStatus(0);
+        }
       } else {
-        entity.setHouseRentStatus(0);
-        entity.setHouseRentAction(3);
+        if (request.isPass()) {
+          entity.setHouseRentStatus(5);
+        } else {
+          entity.setHouseRentStatus(0);
+        }
       }
       houseDao.save(entity);
       return CommonHttpResponse.ok("success");
@@ -435,6 +457,12 @@ public class HouseServiceImpl implements HouseService {
         .findByHouseOwnerAndHouseRentStatusIn(userId, Collections.singletonList(1));
     return CommonHttpResponse.ok(entities.stream()
         .map(HouseBaseInfo::new)
+        .peek(houseBaseInfo -> {
+          houseBaseInfo.setHousePicture(
+              serviceUrl + "/house/" + houseBaseInfo.getHouseId() + "/housePicture");
+          houseBaseInfo.setHouseType(
+              serviceUrl + "/house/" + houseBaseInfo.getHouseId() + "/houseType");
+        })
         .peek(info -> userDao.findById(info.getHouseOwner())
             .ifPresent(user -> info.setOwner(new OwnerInfo(user))))
         .peek(info -> userDao.findById(info.getHouseTenant())

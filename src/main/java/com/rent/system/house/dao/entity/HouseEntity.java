@@ -59,7 +59,7 @@ public class HouseEntity {
     private String houseDesc;
 
     /**
-     * 房屋出租状态:0：待租；1：出租中；2：房屋待续租；3：房客发起房屋续租；4：房客发起租房申请；5：房东同意续租申请；6:退租
+     * 房屋出租状态:0：待租；1：出租中；2：房屋待续租；3：房客发起房屋续租；4：房客发起租房申请；5：房东同意申请；6:退租;
      */
     @Column(name = "house_rent_status")
     private int houseRentStatus;
