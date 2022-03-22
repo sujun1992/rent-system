@@ -399,6 +399,12 @@ public class HouseServiceImpl implements HouseService {
         .map(HouseBaseInfo::new)
         .peek(info -> userDao.findById(info.getHouseOwner())
             .ifPresent(user -> info.setOwner(new OwnerInfo(user))))
+        .peek(houseBaseInfo -> {
+          houseBaseInfo.setHousePicture(
+              serviceUrl + "/house/" + houseBaseInfo.getHouseId() + "/housePicture");
+          houseBaseInfo.setHouseType(
+              serviceUrl + "/house/" + houseBaseInfo.getHouseId() + "/houseType");
+        })
         .collect(Collectors.groupingBy(HouseBaseInfo::getHouseRentStatus));
     return CommonHttpResponse.ok(map);
   }
