@@ -380,6 +380,7 @@ public class HouseServiceImpl implements HouseService {
     if (optional.isPresent()) {
       HouseEntity entity = optional.get();
       entity.setHouseRentStatus(4);
+      entity.setHouseRentAction(1);
       entity.setRentDuration(request.getRentDuration());
       entity.setHouseTenant(userId);
       houseDao.save(entity);
