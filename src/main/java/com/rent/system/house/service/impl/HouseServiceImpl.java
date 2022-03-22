@@ -171,7 +171,7 @@ public class HouseServiceImpl implements HouseService {
               .greaterThan(root.get(HouseEntity_.shareNum), 1);
         } else {
           sharePredicate = criteriaBuilder
-              .lessThan(root.get(HouseEntity_.shareNum), 1);
+              .lessThanOrEqualTo(root.get(HouseEntity_.shareNum), 1);
         }
         predicates.add(sharePredicate);
       }
