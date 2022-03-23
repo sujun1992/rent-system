@@ -1,6 +1,5 @@
 package com.rent.system.house.model;
 
-import com.rent.system.common.TimeUtil;
 import com.rent.system.house.dao.entity.HouseEntity;
 import lombok.Data;
 

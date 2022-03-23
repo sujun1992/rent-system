@@ -33,6 +33,10 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public ResponseEntity<CommonHttpResponse<String>> register(RegisterUserRequestBody body) {
+        Optional<UserEntity> optional = userDao.findByAccount(body.getAccount());
+        if(optional.isPresent()){
+            return CommonHttpResponse.exception(60000,"此账号已被使用！");
+        }
         UserEntity entity = new UserEntity();
         entity.setAccount(body.getAccount());
         entity.setType(body.getType());
