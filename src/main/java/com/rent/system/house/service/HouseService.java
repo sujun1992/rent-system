@@ -33,7 +33,8 @@ public interface HouseService {
 
   ResponseEntity<CommonHttpResponse<List<HouseBaseInfo>>> currentRentHouse(HttpSession session);
 
-  ResponseEntity<CommonHttpResponse<String>> leaseRenewal(String houseId, int type, int rentNum, HttpSession session);
+  ResponseEntity<CommonHttpResponse<String>> leaseRenewal(String houseId, int type, int rentNum,
+      int rentTime, HttpSession session);
 
   ResponseEntity<CommonHttpResponse<String>> updateHouse(String houseId, HouseAddRequestBody body);
 

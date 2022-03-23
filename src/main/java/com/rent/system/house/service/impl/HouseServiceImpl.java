@@ -273,7 +273,7 @@ public class HouseServiceImpl implements HouseService {
 
   @Override
   public ResponseEntity<CommonHttpResponse<String>> leaseRenewal(String houseId, int type,
-      int rentNum, HttpSession session) {
+      int rentNum, int rentTime, HttpSession session) {
     String userId = String.valueOf(session.getAttribute("userId"));
     Optional<HouseEntity> optional = houseDao.findById(houseId);
     if (optional.isPresent()) {
@@ -287,6 +287,7 @@ public class HouseServiceImpl implements HouseService {
       }
       entity.setRentNum(rentNum);
       entity.setHouseTenant(userId);
+      entity.setRentalTime(rentTime);
       houseDao.saveAndFlush(entity);
       return CommonHttpResponse.ok("success");
     }

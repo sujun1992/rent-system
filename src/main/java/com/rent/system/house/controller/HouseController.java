@@ -100,8 +100,9 @@ public class HouseController {
             @RequestParam(required = false) String houseId,
             @RequestParam(required = false) int type,
             @RequestParam(required = false) int rentNum,
+            @RequestParam(required = false) int rentTime,
             HttpSession session) {
-        return houseService.leaseRenewal(houseId, type, rentNum, session);
+        return houseService.leaseRenewal(houseId, type, rentNum, rentTime,session);
     }
 
     @PostMapping("/request")
