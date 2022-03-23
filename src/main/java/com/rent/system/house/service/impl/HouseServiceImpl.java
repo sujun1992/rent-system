@@ -465,6 +465,12 @@ public class HouseServiceImpl implements HouseService {
     List<HouseEntity> entities = houseDao.findByHouseRentStatus(1);
     return CommonHttpResponse.ok(entities.stream()
         .map(HouseBaseInfo::new)
+        .peek(houseBaseInfo -> {
+          houseBaseInfo.setHousePicture(
+              serviceUrl + "/house/" + houseBaseInfo.getHouseId() + "/housePicture");
+          houseBaseInfo.setHouseType(
+              serviceUrl + "/house/" + houseBaseInfo.getHouseId() + "/houseType");
+        })
         .peek(info -> userDao.findById(info.getHouseOwner())
             .ifPresent(user -> info.setOwner(new OwnerInfo(user))))
         .peek(info -> userDao.findById(info.getHouseTenant())
