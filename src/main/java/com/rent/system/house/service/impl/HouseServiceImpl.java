@@ -243,7 +243,10 @@ public class HouseServiceImpl implements HouseService {
     Optional<HouseEntity> optional = houseDao.findById(houseId);
     if (optional.isPresent()) {
       HouseEntity entity = optional.get();
-      return CommonHttpResponse.ok(new HouseBaseInfo(entity));
+      HouseBaseInfo baseInfo = new HouseBaseInfo(entity);
+      baseInfo.setHousePicture(serviceUrl + "/house/" + baseInfo.getHouseId() + "/housePicture");
+      baseInfo.setHouseType(serviceUrl + "/house/" + baseInfo.getHouseId() + "/houseType");
+      return CommonHttpResponse.ok(baseInfo);
     }
     return CommonHttpResponse.exception(60002, "未找到对应房屋信息！");
   }
@@ -257,6 +260,12 @@ public class HouseServiceImpl implements HouseService {
       return CommonHttpResponse.ok(entities.stream().map(HouseBaseInfo::new)
           .peek(info -> userDao.findById(info.getHouseOwner())
               .ifPresent(user -> info.setOwner(new OwnerInfo(user))))
+          .peek(houseBaseInfo -> {
+            houseBaseInfo.setHousePicture(
+                serviceUrl + "/house/" + houseBaseInfo.getHouseId() + "/housePicture");
+            houseBaseInfo
+                .setHouseType(serviceUrl + "/house/" + houseBaseInfo.getHouseId() + "/houseType");
+          })
           .collect(Collectors.toList()));
     }
     return CommonHttpResponse.exception(60002, "未找到对应房屋信息！");
@@ -441,6 +450,12 @@ public class HouseServiceImpl implements HouseService {
         .map(HouseBaseInfo::new)
         .peek(info -> userDao.findById(info.getHouseOwner())
             .ifPresent(user -> info.setOwner(new OwnerInfo(user))))
+        .peek(houseBaseInfo -> {
+          houseBaseInfo.setHousePicture(
+              serviceUrl + "/house/" + houseBaseInfo.getHouseId() + "/housePicture");
+          houseBaseInfo.setHouseType(
+              serviceUrl + "/house/" + houseBaseInfo.getHouseId() + "/houseType");
+        })
         .collect(Collectors.groupingBy(HouseBaseInfo::getHouseRentAction)));
   }
 
