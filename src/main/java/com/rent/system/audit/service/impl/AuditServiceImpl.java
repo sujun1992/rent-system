@@ -25,9 +25,13 @@ public class AuditServiceImpl implements AuditService {
   public ResponseEntity<CommonHttpResponse<String>> houseAudit(AuditHouseRequest request) {
     Optional<HouseEntity> optional = houseDao.findById(request.getHouseId());
     if (optional.isPresent()) {
-      HouseEntity entity = optional.get();
-      entity.setHouseAuditStatus(request.isPass() ? 1 : 2);
-      houseDao.save(entity);
+      if (request.isPass()) {
+        HouseEntity entity = optional.get();
+        entity.setHouseAuditStatus(1);
+        houseDao.save(entity);
+      } else {
+        houseDao.deleteById(request.getHouseId());
+      }
       return CommonHttpResponse.ok("success");
     }
     return CommonHttpResponse.exception(60002, "未找到对应房屋信息！");
